@@ -38,14 +38,14 @@ def main():
             continue
 
         if not resp.isnumeric():
-            print('Sorry, that\'s incorrect. The real word was: ' + word['Spanish'])
+            print('Sorry, that\'s incorrect. The real word was: ' + word['Spanish'] + '; try again!')
             print()
-
-    if int(resp) == 1:
-        main()
+            continue
 
     if int(resp) == 2:
         exit(0)
+    else:
+        main()
 
 
 main()
