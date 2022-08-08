@@ -12,10 +12,23 @@ def main():
     with open('spanish.json', 'r') as file:
         dictionary = json.load(file)
 
-    resp = ''
-    while not resp.isnumeric():
-        resp = input('How many words would you like to try?: ')
-        words = dictionary[:int(resp)]
+    words = dictionary
+
+    first_word: int = 0
+    last_word: int = 0
+
+    # Catch Value Errors
+    try:
+        first_word = int(input('Number of First Word: '))
+        last_word = int(input('Number of Last Word: '))
+        words = dictionary[first_word:last_word]
+    except ValueError:
+        print('Error: Value Error! Using all words!')
+
+    # Catch invalid list indices
+    if first_word <= -1 or last_word >= 1001:
+        words = dictionary
+        print('Error: Index Error! Using all words!')
 
     print()
     print('Type 1 to stop, 2 to quit')
