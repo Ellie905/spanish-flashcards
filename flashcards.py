@@ -13,9 +13,9 @@ def main():
         dictionary = json.load(file)
 
     resp = ''
-    while not resp.isnumeric():
-        resp = input('How many words would you like to try?: ')
-        words = dictionary[:int(resp)]
+    # while not resp.isnumeric():
+        # resp = input('How many words would you like to try?: ')
+    words = dictionary
 
     print()
     print('Type 1 to stop, 2 to quit')
