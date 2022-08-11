@@ -6,7 +6,7 @@
   },
   {
     "Number": "2",
-    "Spanish": "I",
+    "Spanish": "yo",
     "in English": "I"
   },
   {
@@ -37,7 +37,7 @@
   {
     "Number": "8",
     "Spanish": "en",
-    "in English": "on"
+    "in English": "in"
   },
   {
     "Number": "9",
@@ -56,8 +56,8 @@
   },
   {
     "Number": "12",
-    "Spanish": "ser",
-    "in English": "be"
+    "Spanish": "estar",
+    "in English": "will be"
   },
   {
     "Number": "13",
@@ -121,7 +121,7 @@
   },
   {
     "Number": "25",
-    "Spanish": "lo",
+    "Spanish": "eso",
     "in English": "it"
   },
   {

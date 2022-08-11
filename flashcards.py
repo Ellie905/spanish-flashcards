@@ -8,14 +8,76 @@ import json
 import random
 
 
+# Display Word, Get Response
+def flashcards(words, en_otro):
+    print()
+    if en_otro:
+        print('Escriba 1 para detenerse, escriba 2 para salir')
+    else:
+        print('Type 1 to stop, 2 to quit')
+    print()
+
+    resp = ''
+    x = 0
+    while not resp.isnumeric():
+        word = random.choice(words)
+
+        # Display
+        if en_otro is True:
+            print('ID: ' + word['Number'])
+            print(word['Spanish'])
+            print()
+
+            resp = input('Escribe en inglés: ')
+
+        if en_otro is False:
+            print('Word Number: ' + word['Number'])
+            print(word['in English'])
+            print()
+
+            resp = input('Write word in Spanish: ')
+
+        # Check Response
+        if (resp == word['Spanish'] and en_otro is False) or (resp == word['in English'] and en_otro is True):
+            print('Correct!')
+            print()
+            continue
+
+        # Show Results
+        if en_otro is True:
+            print('Ay, incorrecto. La palabra es: ' + word['in English'] + ', otra vez')
+
+        if en_otro is False:
+            print('Sorry, that\'s incorrect. The real word was: ' + word['Spanish'] + '; try again!')
+
+        if not resp.isnumeric():
+            print()
+            continue
+
+    # Restart or Quit
+    if int(resp) == 2:
+        exit(0)
+    else:
+        main()
+
+
 def main():
+    # Load File
     with open('spanish.json', 'r') as file:
         dictionary = json.load(file)
 
+    # Define
     words = dictionary
 
     first_word: int = 0
     last_word: int = 0
+
+    # User selects to show Spanish or English words
+    mode = ''
+
+    while not mode.isnumeric():
+        print()
+        mode = input('Type 1 to display words in Spanish, Type 2 to display words in English: ')
 
     # Catch Value Errors
     try:
@@ -30,35 +92,13 @@ def main():
         words = dictionary
         print('Error: Index Error! Using all words!')
 
-    print()
-    print('Type 1 to stop, 2 to quit')
-    print()
-
-    resp = ''
-    x = 0
-    while not resp.isnumeric():
-        word = random.choice(words)
-
-        print('Word Number: ' + word['Number'])
-        print(word['in English'])
-        print()
-
-        resp = input('Write word in Spanish: ')
-
-        if resp == word['Spanish']:
-            print('Correct!')
-            print()
-            continue
-
-        if not resp.isnumeric():
-            print('Sorry, that\'s incorrect. The real word was: ' + word['Spanish'] + '; try again!')
-            print()
-            continue
-
-    if int(resp) == 2:
-        exit(0)
+    # Run list based on user's choice
+    if int(mode) == 1:
+        mode = True
     else:
-        main()
+        mode = False
+
+    flashcards(words, bool(mode))
 
 
 main()
