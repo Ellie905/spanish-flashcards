@@ -23,14 +23,14 @@ def flashcards(words, en_otro):
         word = random.choice(words)
 
         # Display
-        if en_otro is True:
+        if en_otro is True:  # Display in Spanish
             print('ID: ' + word['Number'])
             print(word['Spanish'])
             print()
 
             resp = input('Escribe en inglés: ')
 
-        if en_otro is False:
+        if en_otro is False:  # Display in English
             print('Word Number: ' + word['Number'])
             print(word['in English'])
             print()
@@ -93,12 +93,7 @@ def main():
         print('Error: Index Error! Using all words!')
 
     # Run list based on user's choice
-    if int(mode) == 1:
-        mode = True
-    else:
-        mode = False
-
-    flashcards(words, bool(mode))
+    flashcards(words, bool(int(mode) - 2))
 
 
 main()
