@@ -4,6 +4,7 @@
 # Data from https://1000mostcommonwords.com/1000-most-common-spanish-words/
 
 
+import argparse
 import json
 import random
 
@@ -83,24 +84,31 @@ def main():
         dictionary = json.load(file)
 
     # Define
+    parser = argparse.ArgumentParser(description='Select values to choose how to display and which flashcards to '
+                                                 'display')
+    # Sequence or Random
+    parser.add_argument(dest='arg1', metavar='A', type=int, help='Type 1 to display random words, Type 2 to display '
+                                                                 'sequential words', default=1)
+    # Type of Word Shown
+    parser.add_argument(dest='arg2', metavar='B', type=int, help='Type 1 to display words in Spanish, Type 2 to '
+                                                                 'display words in English', default=2)
+    # Number of First Word
+    parser.add_argument(dest='arg3', metavar='C', type=int, help='Value between 1 and 1000', default=1)
+    # Number of Last Word
+    parser.add_argument(dest='arg4', metavar='D', type=int, help='Value between First Word and 1000', default=150)
+
+    parser.print_help()
+    args = parser.parse_args()
+
+    # Define Vars
     words = dictionary
-
-    print()
-    sequence = input('Type 1 to display random words, Type 2 to display sequential words: ')
-
-    first_word: int = 0
-    last_word: int = 0
-
-    # User selects to show Spanish or English words
-    mode = ''
-
-    while not mode.isnumeric():
-        mode = input('Type 1 to display words in Spanish, Type 2 to display words in English: ')
+    sequence = args.arg1
+    mode: str = args.arg2
+    first_word: int = int(args.arg3) - 1
+    last_word: int = args.arg4
 
     # Catch Value Errors
     try:
-        first_word = int(input('Number of First Word: ')) - 1
-        last_word = int(input('Number of Last Word: '))
         words = dictionary[first_word:last_word]
     except ValueError:
         print('Error: Value Error! Using all words!')
