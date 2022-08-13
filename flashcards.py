@@ -9,7 +9,7 @@ import random
 
 
 # Display Word, Get Response
-def flashcards(words, en_otro):
+def flashcards(words, en_otro, sequence=False):
     print()
     if en_otro:
         print('Escriba 1 para detenerse, escriba 2 para salir')
@@ -17,10 +17,21 @@ def flashcards(words, en_otro):
         print('Type 1 to stop, 2 to quit')
     print()
 
+    global word
+
     resp = ''
     x = 0
     while not resp.isnumeric():
-        word = random.choice(words)
+        if sequence is False:
+            word = random.choice(words)
+
+        try:
+            if sequence is True:
+                word = words[x]
+        except IndexError:
+            x = 0
+            continue
+
 
         # Display
         if en_otro is True:  # Display in Spanish
@@ -36,6 +47,11 @@ def flashcards(words, en_otro):
             print()
 
             resp = input('Write word in Spanish: ')
+
+        if sequence is True:
+            x += 1
+
+        #if x + 1 > words
 
         # Check Response
         if (resp == word['Spanish'] and en_otro is False) or (resp == word['in English'] and en_otro is True):
@@ -69,6 +85,9 @@ def main():
     # Define
     words = dictionary
 
+    print()
+    sequence = input('Type 1 to display random words, Type 2 to display sequential words: ')
+
     first_word: int = 0
     last_word: int = 0
 
@@ -76,12 +95,11 @@ def main():
     mode = ''
 
     while not mode.isnumeric():
-        print()
         mode = input('Type 1 to display words in Spanish, Type 2 to display words in English: ')
 
     # Catch Value Errors
     try:
-        first_word = int(input('Number of First Word: '))
+        first_word = int(input('Number of First Word: ')) - 1
         last_word = int(input('Number of Last Word: '))
         words = dictionary[first_word:last_word]
     except ValueError:
@@ -92,8 +110,13 @@ def main():
         words = dictionary
         print('Error: Index Error! Using all words!')
 
+    if int(sequence) == 2:
+        sequence = True
+    else:
+        sequence = False
+
     # Run list based on user's choice
-    flashcards(words, bool(int(mode) - 2))
+    flashcards(words, bool(int(mode) - 2), sequence)
 
 
 main()
