@@ -83,7 +83,7 @@ def main():
     with open('spanish.json', 'r') as file:
         dictionary = json.load(file)
 
-    # Define
+    # Define Args
     parser = argparse.ArgumentParser(description='Select values to choose how to display and which flashcards to '
                                                  'display')
     # Sequence or Random
