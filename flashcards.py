@@ -1,19 +1,19 @@
 # Ellie Day
 # 07/31/22
 
-# Data from https://1000mostcommonwords.com/1000-most-common-spanish-words/
+# Spanish Words from https://1000mostcommonwords.com/1000-most-common-spanish-words/
+# Russian Words from https://1000mostcommonwords.com/1000-most-common-russian-words/
 
 
-import argparse
 import json
 import random
 
 
 # Display Word, Get Response
-def flashcards(words, show_english, show_random=False):
+def flashcards(words, phrases, show_english, show_random=False):
     print()
     if not show_english:
-        print('Escriba 1 para detenerse, escriba 2 para salir')
+        print(phrases['1'])
     else:
         print('Type 1 to stop, 2 to quit')
     print()
@@ -34,19 +34,19 @@ def flashcards(words, show_english, show_random=False):
             continue
 
         # Display
-        if show_english is False:  # Display in Spanish
+        if show_english is False:  # Display in Other Language
             print('ID: ' + word['Number'])
-            print(word['Spanish'])
+            print(word['Word'])
             print()
 
-            resp = input('Escribe en inglés: ')
+            resp = input(phrases['2'])
 
         if show_english is True:  # Display in English
             print('Word Number: ' + word['Number'])
             print(word['in English'])
             print()
 
-            resp = input('Write word in Spanish: ')
+            resp = input('Write word in Other Language: ')
 
         if show_random is False:
             x += 1
@@ -54,17 +54,21 @@ def flashcards(words, show_english, show_random=False):
         # if x + 1 > words
 
         # Check Response
-        if (resp == word['Spanish'] and show_english is False) or (resp == word['in English'] and show_english is True):
+        if (resp == word['Word'] and show_english is True) or (resp == word['in English'] and show_english is False):
             print('Correct!')
             print()
             continue
 
+        # If resp is a number, break out of loop
+        if resp.isnumeric():
+            continue
+
         # Show Results
         if show_english is False:
-            print('Ay, incorrecto. La palabra es: ' + word['in English'] + ', otra vez')
+            print(phrases['3'] + word['in English'] + phrases['4'])
 
         if show_english is True:
-            print('Sorry, that\'s incorrect. The real word was: ' + word['Spanish'] + '; try again!')
+            print('Sorry, that\'s incorrect. The real word was: ' + word['Word'] + '; try again!')
 
         if not resp.isnumeric():
             print()
@@ -85,18 +89,12 @@ def settings():
     # Vars
     show_english = True
     show_random = True
-    first_number = 1
-    final_number = 1000
-
-    print('Welcome to the English/Spanish Flashcards Tool!')
-    print('Bienvenido a la herramienta de los palabras de íngles/español!')
 
     # Setting 1
     print()
 
-    print('Would you like to display all words in English (and guess the related Spanish word?)')
-    print('¿Quieres mostrar las palabras en íngles? (¿y adivinas la palabra español?)')
-    print('Y = Yes | Y = sí')
+    print('Would you like to display all words in English (and guess the related word in another language?)')
+    print('Y = Yes')
     print('N = No')
     temp_inp_var = str.upper(input())
 
@@ -106,15 +104,12 @@ def settings():
     if temp_inp_var == 'Y':
         show_english = True  # Equal to arg2 = 2 from old code | Program is in English
     if temp_inp_var == 'N':
-        show_english = False  # Equal to arg2 = 1 from old code | Program is in Spanish
+        show_english = False  # Equal to arg2 = 1 from old code | Program is in Other Language
 
     # Setting 2
     print()
 
-    if show_english:
-        print('Display words in random order? (otherwise, sequential order)')
-    else:
-        print('¿Quieres mostrar las palabras en orden aleatorio? (la alternativa es el orden secuencial)')
+    print('Display words in random order? (otherwise, sequential order)')
 
     temp_inp_var = str.upper(input())
 
@@ -129,10 +124,7 @@ def settings():
     # Setting 4
     print()
 
-    if show_english:
-        print('Type the number of the first word (1-1000)')
-    else:
-        print('Escribe el número de la primera palabra (1-1000)')
+    print('Type the number of the first word (1-1000)')
 
     temp_inp_var = int(input())
 
@@ -144,10 +136,7 @@ def settings():
     # Setting 5
     print()
 
-    if show_english:
-        print('Type the number of the last word (1-1000)')
-    else:
-        print('Escribe el número de la última palabra (1-1000)')
+    print('Type the number of the last word (1-1000)')
 
     temp_inp_var = int(input())
 
@@ -161,8 +150,30 @@ def settings():
 
 
 def main():
-    # Load File
-    with open('spanish.json', 'r') as file:
+    # Load Phrases File
+    with open('phrases.json', 'r') as file:
+        phrases = json.load(file)
+
+    # Choose Language
+    language = ''
+
+    print("Choose language:")
+    print("1: Spanish")
+    print("2: Russian")
+    temp_inp_var = int(input())
+
+    if temp_inp_var == 1:
+        language = 'spanish.json'
+        phrases = phrases[0]
+    if temp_inp_var == 2:
+        language = 'russian.json'
+        phrases = phrases[1]
+
+    while not temp_inp_var < 2 and not temp_inp_var > 1:
+        temp_inp_var = int(input())
+
+    # Load Language File
+    with open(language, 'r') as file:
         dictionary = json.load(file)
 
     # Define Vars
@@ -176,7 +187,7 @@ def main():
         print('Error: Value Error! Using all words!')
 
     # Run list based on user's choice
-    flashcards(words, show_english, show_random)
+    flashcards(words, phrases, show_english, show_random)
 
 
 main()
